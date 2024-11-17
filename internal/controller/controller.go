@@ -15,52 +15,52 @@ func New() *UnderstatController {
 	return &UnderstatController{}
 }
 
-func (p *UnderstatController) GetPlayers(league model.League, year model.Year) model.Players {
+func (p *UnderstatController) GetPlayers(league model.League, year model.Year) (model.Players, error) {
 	leagueModel := p.repo.GetLeague(league, year)
 
 	if leagueModel != nil {
-		return leagueModel.Players
+		return leagueModel.Players, nil
 	}
 
 	lmodel, error := p.requestData(league, year)
 	if error != nil {
-		return nil
+		return nil, error
 	}
 	p.repo.SetModel(lmodel, league, year)
 
-	return lmodel.Players
+	return lmodel.Players, nil
 }
 
-func (p *UnderstatController) GetGames(league model.League, year model.Year) model.Games {
+func (p *UnderstatController) GetGames(league model.League, year model.Year) (model.Games, error) {
 	leagueModel := p.repo.GetLeague(league, year)
 
 	if leagueModel != nil {
-		return leagueModel.Games
+		return leagueModel.Games, nil
 	}
 
 	lmodel, error := p.requestData(league, year)
 	if error != nil {
-		return nil
+		return nil, error
 	}
 	p.repo.SetModel(lmodel, league, year)
 
-	return lmodel.Games
+	return lmodel.Games, nil
 }
 
-func (p *UnderstatController) GetTeams(league model.League, year model.Year) model.Teams {
+func (p *UnderstatController) GetTeams(league model.League, year model.Year) (model.Teams, error) {
 	leagueModel := p.repo.GetLeague(league, year)
 
 	if leagueModel != nil {
-		return leagueModel.Teams
+		return leagueModel.Teams, nil
 	}
 
 	lmodel, error := p.requestData(league, year)
 	if error != nil {
-		return nil
+		return nil, error
 	}
 	p.repo.SetModel(lmodel, league, year)
 
-	return lmodel.Teams
+	return lmodel.Teams, nil
 }
 
 func (p *UnderstatController) requestData(league model.League, year model.Year) (model.LeagueModel, error) {
