@@ -5,5 +5,12 @@ type DataType int
 const (
 	PLAYERS = iota
 	TEAMS
-	DATES
+	GAMES
 )
+
+type Year int
+
+type LeagueData struct {
+}
+
+type YearlyData map[int]LeagueData
