@@ -1,4 +1,4 @@
-package league
+package model
 
 type League string
 

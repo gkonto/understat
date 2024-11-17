@@ -1,41 +1,33 @@
 package controller
 
 import (
-	"fmt"
-
-	"github.com/gkonto/understat/data"
-	"github.com/gkonto/understat/league"
+	"github.com/gkonto/understat/model"
 )
 
-type UnderstatRepository struct {
-	Leagues map[league.League]data.YearlyData
-}
-
 type UnderstatController struct {
-	repo UnderstatRepository
+	repo model.Repository
 }
 
 func New() *UnderstatController {
 	return &UnderstatController{}
 }
 
-func (p *UnderstatController) Get(t data.DataType, league league.League, year int) {
-	switch t {
-	case data.PLAYERS:
-		fmt.Printf("Fetching players\n")
-	case data.TEAMS:
-		fmt.Printf("Fetching teams")
-	case data.GAMES:
-		fmt.Printf("Fetching dates")
-	default:
-		fmt.Printf("nil")
-	}
+func (p *UnderstatController) GetPlayers(league model.League, year int) *model.Players {
+	return nil
 }
 
-func (p *UnderstatController) fetch() {
-
+func (p *UnderstatController) GetGames(league model.League, year int) *model.Games {
+	return nil
 }
 
-func (p *UnderstatController) exists() {
+func (p *UnderstatController) GetTeams(league model.League, year int) *model.Teams {
+	return nil
+}
+
+func (p *UnderstatController) getCached(league model.League, year int) *model.LeagueData {
+	return nil
+}
+
+func (p *UnderstatController) get(league model.League, year int) {
 
 }
