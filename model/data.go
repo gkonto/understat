@@ -20,3 +20,11 @@ type LeagueModel struct {
 }
 
 type LeagueData map[Year]LeagueModel
+
+func NewLeagueModel(players Players, teams Teams, games Games) *LeagueModel {
+	return &LeagueModel{
+		Players: players,
+		Teams:   teams,
+		Games:   games,
+	}
+}
