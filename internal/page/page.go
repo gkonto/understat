@@ -130,7 +130,7 @@ func (p *Page) extractData(tag string) (string, error) {
 
 func (p *Page) getStartIndex(contents string) int {
 	start_index := 0
-	start_pattern := `JSON\.parse\(\s*"`
+	start_pattern := `JSON\.parse\(\s*['"]`
 	re_start := regexp.MustCompile(start_pattern)
 	match_start := re_start.FindStringIndex(contents)
 	if match_start != nil {
@@ -141,7 +141,7 @@ func (p *Page) getStartIndex(contents string) int {
 
 func (p *Page) getEndIndex(contents string) int {
 	end_index := 0
-	end_pattern := `"\s*\)`
+	end_pattern := `['"]\s*\)`
 	re_end := regexp.MustCompile(end_pattern)
 	match_end := re_end.FindStringIndex(contents)
 	if match_end != nil {

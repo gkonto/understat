@@ -4,6 +4,12 @@ type Repository struct {
 	Leagues map[League]LeagueData
 }
 
+func NewRepository() *Repository {
+	return &Repository{
+		Leagues: make(map[League]LeagueData),
+	}
+}
+
 func (p *Repository) GetLeague(league League, year Year) *LeagueModel {
 	perYear, exists := p.Leagues[league]
 	if exists {

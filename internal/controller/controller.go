@@ -6,11 +6,13 @@ import (
 )
 
 type UnderstatController struct {
-	repo model.Repository
+	repo *model.Repository
 }
 
 func New() *UnderstatController {
-	return &UnderstatController{}
+	return &UnderstatController{
+		repo: model.NewRepository(),
+	}
 }
 
 func (p *UnderstatController) GetPlayers(league model.League, year model.Year) (model.Players, error) {

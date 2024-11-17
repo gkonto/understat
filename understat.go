@@ -6,12 +6,13 @@ import (
 )
 
 type UnderstatAPI struct {
-	ctrl controller.UnderstatController
+	ctrl *controller.UnderstatController
 }
 
 func NewUnderstatAPI() *UnderstatAPI {
-	api := &UnderstatAPI{}
-	return api
+	return &UnderstatAPI{
+		ctrl: controller.New(),
+	}
 }
 
 func (p *UnderstatAPI) GetPlayers(league model.League, year model.Year) (model.Players, error) {
