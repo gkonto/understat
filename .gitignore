@@ -1,0 +1,56 @@
+# Go build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go module files
+/go.sum
+/go.work
+/go.work.sum
+
+# GoLand-specific files
+.idea/
+*.iml
+workspace.xml
+tasks.xml
+shelf/
+libraries/
+.idea_modules/
+.vscode/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+*.DS_Store
+Thumbs.db
+
+# Vendor directory (if not committed)
+vendor/
+
+# Binary files
+bin/
+*.o
+
+# Coverage files
+*.cover
+*.cov
+
+# Test results
+*.testresult
+
+# Node.js (optional, for projects mixing Go and JS/TS)
+node_modules/
+
+# Generated files (optional)
+gen/
+
+# Debugging/Profiling tools
+*.pprof
+
+# IDE Indexes
+*.idea/*
