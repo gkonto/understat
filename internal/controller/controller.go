@@ -3,6 +3,7 @@ package controller
 import (
 	"errors"
 
+	"github.com/gkonto/understat/internal/requests"
 	"github.com/gkonto/understat/model"
 )
 
@@ -63,5 +64,17 @@ func (p *UnderstatController) GetTeams(league model.League, year model.Year) mod
 }
 
 func (p *UnderstatController) requestData(league model.League, year model.Year) (model.LeagueModel, error) {
-	return model.LeagueModel{}, errors.New("could not fetch LeageModel from https://understat.com/")
+	requestHandler := requests.New()
+	page, err := requestHandler.Fetch(league, year)
+
+	if err != nil {
+		return model.LeagueModel{}, err
+	}
+
+	lmodel, err := page.BuildModel()
+	if err != nil {
+		return lmodel, nil
+	} else {
+		return model.LeagueModel{}, errors.New("Failed to fetch LeagueModel from https://understat.com/")
+	}
 }
