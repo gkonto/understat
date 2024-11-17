@@ -13,9 +13,9 @@ func New() *UnderstatController {
 }
 
 func (p *UnderstatController) GetPlayers(league model.League, year model.Year) *model.Players {
-	league, exists := p.repo.GetLeague(league)
+	leagueModel := p.repo.GetLeague(league, year)
 
-	if !exists {
+	if leagueModel == nil {
 		return nil
 	}
 
@@ -27,13 +27,5 @@ func (p *UnderstatController) GetGames(league model.League, year model.Year) *mo
 }
 
 func (p *UnderstatController) GetTeams(league model.League, year model.Year) *model.Teams {
-	return nil
-}
-
-func (p *UnderstatController) getCached(league model.League, year model.Year) *model.LeagueModel {
-	return nil
-}
-
-func (p *UnderstatController) get(league model.League, year model.Year) *model.LeagueModel {
 	return nil
 }

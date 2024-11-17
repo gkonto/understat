@@ -14,9 +14,9 @@ type Teams string
 type Games string
 
 type LeagueModel struct {
-	Players *Players
-	Teams   *Teams
-	Games   *Games
+	Players Players
+	Teams   Teams
+	Games   Games
 }
 
-type YearlyData map[Year]LeagueModel
+type LeagueData map[Year]LeagueModel
