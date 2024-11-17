@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"errors"
+
 	"github.com/gkonto/understat/model"
 )
 
@@ -12,34 +14,54 @@ func New() *UnderstatController {
 	return &UnderstatController{}
 }
 
-func (p *UnderstatController) GetPlayers(league model.League, year model.Year) *model.Players {
+func (p *UnderstatController) GetPlayers(league model.League, year model.Year) model.Players {
 	leagueModel := p.repo.GetLeague(league, year)
 
 	if leagueModel != nil {
-		return &leagueModel.Players
+		return leagueModel.Players
 	}
 
-	// What if not cached ?
-	//	Create it.
-	//  Add it to repo
-	//  return it.
-	return nil
+	lmodel, error := p.requestData(league, year)
+	if error != nil {
+		return nil
+	}
+	p.repo.SetModel(lmodel, league, year)
+
+	return lmodel.Players
 }
 
-func (p *UnderstatController) GetGames(league model.League, year model.Year) *model.Games {
+func (p *UnderstatController) GetGames(league model.League, year model.Year) model.Games {
 	leagueModel := p.repo.GetLeague(league, year)
 
 	if leagueModel != nil {
-		return &leagueModel.Games
+		return leagueModel.Games
 	}
-	return nil
+
+	lmodel, error := p.requestData(league, year)
+	if error != nil {
+		return nil
+	}
+	p.repo.SetModel(lmodel, league, year)
+
+	return lmodel.Games
 }
 
-func (p *UnderstatController) GetTeams(league model.League, year model.Year) *model.Teams {
+func (p *UnderstatController) GetTeams(league model.League, year model.Year) model.Teams {
 	leagueModel := p.repo.GetLeague(league, year)
 
 	if leagueModel != nil {
-		return &leagueModel.Teams
+		return leagueModel.Teams
 	}
-	return nil
+
+	lmodel, error := p.requestData(league, year)
+	if error != nil {
+		return nil
+	}
+	p.repo.SetModel(lmodel, league, year)
+
+	return lmodel.Teams
+}
+
+func (p *UnderstatController) requestData(league model.League, year model.Year) (model.LeagueModel, error) {
+	return model.LeagueModel{}, errors.New("could not fetch LeageModel from https://understat.com/")
 }

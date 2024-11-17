@@ -9,9 +9,9 @@ const (
 )
 
 type Year int
-type Players string
-type Teams string
-type Games string
+type Players []Player
+type Teams []string
+type Games []string
 
 type LeagueModel struct {
 	Players Players
