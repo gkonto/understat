@@ -9,14 +9,14 @@ func (p *Repository) GetLeague(league League, year Year) *LeagueModel {
 	if exists {
 		leagueModel, exists := perYear[year]
 		if exists {
-			return &leagueModel
+			return leagueModel
 		}
 	}
 
 	return nil
 }
 
-func (p *Repository) SetModel(lmodel LeagueModel, league League, year Year) {
+func (p *Repository) SetModel(lmodel *LeagueModel, league League, year Year) {
 	// Check if the league already exists in the Leagues map
 	perYear, exists := p.Leagues[league]
 	if !exists {

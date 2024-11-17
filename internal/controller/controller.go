@@ -1,8 +1,6 @@
 package controller
 
 import (
-	"errors"
-
 	"github.com/gkonto/understat/internal/requests"
 	"github.com/gkonto/understat/model"
 )
@@ -54,21 +52,28 @@ func (p *UnderstatController) cacheLeague(league model.League, year model.Year) 
 		return nil, error
 	}
 	p.repo.SetModel(lmodel, league, year)
-	return &lmodel, nil
+	return lmodel, nil
 }
 
-func (p *UnderstatController) requestData(league model.League, year model.Year) (model.LeagueModel, error) {
+func (p *UnderstatController) requestData(league model.League, year model.Year) (*model.LeagueModel, error) {
 	requestHandler := requests.New()
 	page, err := requestHandler.Fetch(league, year)
 
 	if err != nil {
-		return model.LeagueModel{}, err
+		return nil, err
+	}
+	players, err := page.GetPlayers()
+	if err != nil {
+		return nil, err
+	}
+	teams, err := page.GetTeams()
+	if err != nil {
+		return nil, err
+	}
+	games, err := page.GetGames()
+	if err != nil {
+		return nil, err
 	}
 
-	lmodel, err := page.BuildModel()
-	if err != nil {
-		return lmodel, nil
-	} else {
-		return model.LeagueModel{}, errors.New("Failed to fetch LeagueModel from https://understat.com/")
-	}
+	return model.NewLeagueModel(players, teams, games), nil
 }

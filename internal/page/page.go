@@ -28,11 +28,10 @@ func New(url string, contents []byte) *Page {
 	}
 }
 
-func decodeCore(contents string) (string, error) {
+func decodeJSON(contents string) (string, error) {
 	if strings.HasPrefix(contents, `"`) && strings.HasSuffix(contents, `"`) {
 		contents = contents[1 : len(contents)-1]
 	}
-
 	decoded := ""
 	for i := 0; i < len(contents); i++ {
 		if i+3 < len(contents) && contents[i] == '\\' && contents[i+1] == 'x' {
@@ -41,7 +40,7 @@ func decodeCore(contents string) (string, error) {
 			var char byte
 			_, err := fmt.Sscanf(hexValue, "%02X", &char)
 			if err != nil {
-				return nil, fmt.Errorf("failed to decode hex escape: %w", err)
+				return "", fmt.Errorf("failed to decode hex escape: %w", err)
 			}
 			decoded += string(char)
 			i += 3 // Skip over the escape sequence
@@ -52,38 +51,52 @@ func decodeCore(contents string) (string, error) {
 	return decoded, nil
 }
 
-func decodePlayers(contents string) model.Players {
-	return model.Players{}
+func buildPlayers(contents string) (model.Players, error) {
+	return model.Players{}, nil
 }
 
-func decodeTeams(contents string) model.Teams {
-	return model.Teams{}
+func buildTeams(contents string) (model.Teams, error) {
+	return model.Teams{}, nil
 }
 
-func decodeGames(contents string) model.Games {
-	return model.Games{}
+func buildGames(contents string) (model.Games, error) {
+	return model.Games{}, nil
 }
 
-func (p *Page) BuildModel() (*model.LeagueModel, error) {
+func (p *Page) GetPlayers() (model.Players, error) {
 	playerContents, err := p.extractData(PLAYERS)
 	if err != nil {
-		return &model.LeagueModel{}, errors.New("Failed to get players data")
+		return nil, errors.New("Failed to get Players data")
 	}
-	players := decodePlayers(playerContents)
+	jsonDecoded, err := decodeJSON(playerContents)
+	if err != nil {
+		return nil, err
+	}
+	return buildPlayers(jsonDecoded)
+}
 
+func (p *Page) GetTeams() (model.Teams, error) {
 	teamContents, err := p.extractData(TEAMS)
 	if err != nil {
-		return &model.LeagueModel{}, errors.New("Failed to get team data")
+		return nil, errors.New("Failed to get Team data")
 	}
-	teams := decodeTeams(teamContents)
+	jsonDecoded, err := decodeJSON(teamContents)
+	if err != nil {
+		return nil, err
+	}
+	return buildTeams(jsonDecoded)
+}
 
+func (p *Page) GetGames() (model.Games, error) {
 	gamesContents, err := p.extractData(GAMES)
 	if err != nil {
-		return &model.LeagueModel{}, errors.New("Failed to get games data")
+		return nil, errors.New("Failed to get Games data")
 	}
-	games := decodeGames(gamesContents)
-
-	return model.NewLeagueModel(players, teams, games), nil
+	jsonDecoded, err := decodeJSON(gamesContents)
+	if err != nil {
+		return nil, err
+	}
+	return buildGames(jsonDecoded)
 }
 
 func (p *Page) extractData(tag string) (string, error) {
