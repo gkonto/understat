@@ -52,6 +52,7 @@ func decodeJSON(contents string) (string, error) {
 }
 
 func buildPlayers(contents string) (model.Players, error) {
+	fmt.Printf("%s", contents)
 	return model.Players{}, nil
 }
 

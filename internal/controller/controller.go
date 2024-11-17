@@ -21,6 +21,9 @@ func (p *UnderstatController) GetPlayers(league model.League, year model.Year) (
 	}
 
 	leagueModel, error := p.cacheLeague(league, year)
+	if error != nil {
+		return nil, error
+	}
 	return leagueModel.Players, error
 }
 
@@ -32,6 +35,9 @@ func (p *UnderstatController) GetGames(league model.League, year model.Year) (mo
 	}
 
 	leagueModel, error := p.cacheLeague(league, year)
+	if error != nil {
+		return nil, error
+	}
 	return leagueModel.Games, error
 }
 
@@ -43,6 +49,9 @@ func (p *UnderstatController) GetTeams(league model.League, year model.Year) (mo
 	}
 
 	leagueModel, error := p.cacheLeague(league, year)
+	if error != nil {
+		return nil, error
+	}
 	return leagueModel.Teams, error
 }
 
