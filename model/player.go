@@ -20,3 +20,9 @@ type Player struct {
 	XGChain   float64 `json:"xGChain"`
 	XGBuildup float64 `json:"xGBuildup"`
 }
+
+type Team struct {
+}
+
+type Game struct {
+}

@@ -14,17 +14,14 @@ func New() *UnderstatAPI {
 	return api
 }
 
-// TODO this must return and error apart from model
-func (p *UnderstatAPI) GetPlayers(league model.League, year model.Year) model.Players {
+func (p *UnderstatAPI) GetPlayers(league model.League, year model.Year) (model.Players, error) {
 	return p.ctrl.GetPlayers(league, year)
 }
 
-// TODO this must return and error apart from model
-func (p *UnderstatAPI) GetGames(league model.League, year model.Year) model.Games {
+func (p *UnderstatAPI) GetGames(league model.League, year model.Year) (model.Games, error) {
 	return p.ctrl.GetGames(league, year)
 }
 
-// TODO this must return and error apart from model
-func (p *UnderstatAPI) GetTeams(league model.League, year model.Year) model.Teams {
+func (p *UnderstatAPI) GetTeams(league model.League, year model.Year) (model.Teams, error) {
 	return p.ctrl.GetTeams(league, year)
 }

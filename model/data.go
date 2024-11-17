@@ -10,8 +10,8 @@ const (
 
 type Year int
 type Players []Player
-type Teams []string
-type Games []string
+type Teams []Team
+type Games []Game
 
 type LeagueModel struct {
 	Players Players
