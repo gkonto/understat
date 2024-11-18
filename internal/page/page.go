@@ -1,6 +1,7 @@
 package page
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"regexp"
@@ -52,15 +53,25 @@ func decodeJSON(contents string) (string, error) {
 }
 
 func buildPlayers(contents string) (model.Players, error) {
-	fmt.Printf("%s", contents)
-	return model.Players{}, nil
+	// Define a slice to hold the Player structs
+	var players model.Players
+
+	// Parse the JSON string
+	err := json.Unmarshal([]byte(contents), &players)
+	if err != nil {
+		return model.Players{}, err
+	}
+
+	return players, nil
 }
 
 func buildTeams(contents string) (model.Teams, error) {
+	// TODO
 	return model.Teams{}, nil
 }
 
 func buildGames(contents string) (model.Games, error) {
+	// TODO
 	return model.Games{}, nil
 }
 
