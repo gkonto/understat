@@ -53,10 +53,7 @@ func decodeJSON(contents string) (string, error) {
 }
 
 func buildPlayers(contents string) (model.Players, error) {
-	// Define a slice to hold the Player structs
 	var players model.Players
-
-	// Parse the JSON string
 	err := json.Unmarshal([]byte(contents), &players)
 	if err != nil {
 		return model.Players{}, err
@@ -66,13 +63,21 @@ func buildPlayers(contents string) (model.Players, error) {
 }
 
 func buildTeams(contents string) (model.Teams, error) {
-	// TODO
-	return model.Teams{}, nil
+	var teams model.Teams
+	// err := json.Unmarshal([]byte(contents), &teams)
+	// if err != nil {
+	// 	return model.Teams{}, err
+	// }
+	return teams, nil
 }
 
 func buildGames(contents string) (model.Games, error) {
-	// TODO
-	return model.Games{}, nil
+	var games model.Games
+	err := json.Unmarshal([]byte(contents), &games)
+	if err != nil {
+		return model.Games{}, err
+	}
+	return games, nil
 }
 
 func (p *Page) GetPlayers() (model.Players, error) {
