@@ -21,15 +21,13 @@ type LocalPageGetter struct {
 }
 
 type UnderstatPageGetter struct {
-	baseURL string
-	//client     *http.Client
+	baseURL    string
 	htmlGetter HTMLGetter
 }
 
 func New() *UnderstatPageGetter {
 	return &UnderstatPageGetter{
 		baseURL: "https://understat.com",
-		//client:  &http.Client{},
 		htmlGetter: &HTTPGetter{
 			client: &http.Client{},
 		},
