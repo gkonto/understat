@@ -1,16 +1,18 @@
-package model
+package cache
+
+import "github.com/gkonto/understat/model"
 
 type Repository struct {
-	Leagues map[League]LeagueData
+	Leagues map[model.League]model.LeagueData
 }
 
 func NewRepository() *Repository {
 	return &Repository{
-		Leagues: make(map[League]LeagueData),
+		Leagues: make(map[model.League]model.LeagueData),
 	}
 }
 
-func (p *Repository) GetLeague(league League, year Year) *LeagueModel {
+func (p *Repository) GetLeague(league model.League, year model.Year) *model.LeagueModel {
 	perYear, exists := p.Leagues[league]
 	if exists {
 		leagueModel, exists := perYear[year]
@@ -22,11 +24,11 @@ func (p *Repository) GetLeague(league League, year Year) *LeagueModel {
 	return nil
 }
 
-func (p *Repository) SetModel(lmodel *LeagueModel, league League, year Year) {
+func (p *Repository) SetModel(lmodel *model.LeagueModel, league model.League, year model.Year) {
 	// Check if the league already exists in the Leagues map
 	perYear, exists := p.Leagues[league]
 	if !exists {
-		p.Leagues[league] = make(LeagueData)
+		p.Leagues[league] = make(model.LeagueData)
 		perYear = p.Leagues[league]
 	}
 

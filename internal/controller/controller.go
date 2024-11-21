@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github.com/gkonto/understat/internal/cache"
 	"github.com/gkonto/understat/internal/requests"
 	"github.com/gkonto/understat/model"
 )
@@ -9,13 +10,12 @@ type RequestHandler struct {
 }
 
 type UnderstatController struct {
-	repo           *model.Repository
-	requestHandler RequestHandler
+	repo *cache.Repository
 }
 
 func New() *UnderstatController {
 	return &UnderstatController{
-		repo: model.NewRepository(),
+		repo: cache.NewRepository(),
 	}
 }
 

@@ -13,7 +13,7 @@ import (
 
 type Page struct {
 	Url      string
-	contents []byte
+	Contents []byte
 }
 
 const (
@@ -25,7 +25,7 @@ const (
 func New(url string, contents []byte) *Page {
 	return &Page{
 		Url:      url,
-		contents: contents,
+		Contents: contents,
 	}
 }
 
@@ -117,7 +117,7 @@ func (p *Page) GetGames() (model.Games, error) {
 }
 
 func (p *Page) extractData(tag string) (string, error) {
-	reader := strings.NewReader(string(p.contents))
+	reader := strings.NewReader(string(p.Contents))
 	doc, err := goquery.NewDocumentFromReader(reader)
 	if err != nil {
 		return "", err
@@ -167,5 +167,5 @@ func (p *Page) getEndIndex(contents string) int {
 }
 
 func (p *Page) hasContents() bool {
-	return len(p.contents) > 0
+	return len(p.Contents) > 0
 }
