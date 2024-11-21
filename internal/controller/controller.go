@@ -5,8 +5,12 @@ import (
 	"github.com/gkonto/understat/model"
 )
 
+type RequestHandler struct {
+}
+
 type UnderstatController struct {
-	repo *model.Repository
+	repo           *model.Repository
+	requestHandler RequestHandler
 }
 
 func New() *UnderstatController {
