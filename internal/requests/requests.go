@@ -10,14 +10,11 @@ import (
 )
 
 type HTMLGetter interface {
-	Get(url string) (*page.Page, error)
+	Get(url string) ([]byte, error)
 }
 
 type HTTPGetter struct {
 	client *http.Client
-}
-
-type LocalPageGetter struct {
 }
 
 type UnderstatPageGetter struct {
@@ -34,18 +31,14 @@ func New() *UnderstatPageGetter {
 	}
 }
 
-func (p *HTTPGetter) Get(url string) (*page.Page, error) {
+func (p *HTTPGetter) Get(url string) ([]byte, error) {
 	resp, err := p.client.Get(url)
 	if err != nil {
 		return nil, err
 	}
 
 	defer resp.Body.Close()
-	contents, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-	return page.New(url, contents), nil
+	return io.ReadAll(resp.Body)
 }
 
 func (p *UnderstatPageGetter) FormatURL(league model.League, year model.Year) string {
@@ -54,5 +47,9 @@ func (p *UnderstatPageGetter) FormatURL(league model.League, year model.Year) st
 
 func (p *UnderstatPageGetter) Fetch(league model.League, year model.Year) (*page.Page, error) {
 	url := p.FormatURL(league, year)
-	return p.htmlGetter.Get(url)
+	contents, err := p.htmlGetter.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	return page.New(url, contents), nil
 }

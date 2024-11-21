@@ -12,7 +12,7 @@ import (
 )
 
 type Page struct {
-	url      string
+	Url      string
 	contents []byte
 }
 
@@ -24,7 +24,7 @@ const (
 
 func New(url string, contents []byte) *Page {
 	return &Page{
-		url:      url,
+		Url:      url,
 		contents: contents,
 	}
 }
@@ -164,4 +164,8 @@ func (p *Page) getEndIndex(contents string) int {
 		end_index = match_end[0]
 	}
 	return end_index
+}
+
+func (p *Page) hasContents() bool {
+	return len(p.contents) > 0
 }
