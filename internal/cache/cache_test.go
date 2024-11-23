@@ -113,7 +113,7 @@ func TestRepository_SetModel_NewLeague(t *testing.T) {
 	}
 
 	// Add model for new league
-	repo.SetModel(leagueModel, "league", year)
+	repo.SetModel(leagueModel, "La_liga", year)
 
 	// Retrieve the model for the new league
 	retrievedModel := repo.GetLeague("La_liga", year)
