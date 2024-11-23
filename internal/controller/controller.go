@@ -10,17 +10,17 @@ type RequestHandler struct {
 }
 
 type UnderstatController struct {
-	repo *cache.Repository
+	Repo *cache.Repository
 }
 
 func New() *UnderstatController {
 	return &UnderstatController{
-		repo: cache.NewRepository(),
+		Repo: cache.NewRepository(),
 	}
 }
 
 func (p *UnderstatController) GetPlayers(league model.League, year model.Year) (model.Players, error) {
-	leagueModel := p.repo.GetLeague(league, year)
+	leagueModel := p.Repo.GetLeague(league, year)
 
 	if leagueModel != nil {
 		return leagueModel.Players, nil
@@ -34,7 +34,7 @@ func (p *UnderstatController) GetPlayers(league model.League, year model.Year) (
 }
 
 func (p *UnderstatController) GetGames(league model.League, year model.Year) (model.Games, error) {
-	leagueModel := p.repo.GetLeague(league, year)
+	leagueModel := p.Repo.GetLeague(league, year)
 
 	if leagueModel != nil {
 		return leagueModel.Games, nil
@@ -48,7 +48,7 @@ func (p *UnderstatController) GetGames(league model.League, year model.Year) (mo
 }
 
 func (p *UnderstatController) GetTeams(league model.League, year model.Year) (model.Teams, error) {
-	leagueModel := p.repo.GetLeague(league, year)
+	leagueModel := p.Repo.GetLeague(league, year)
 
 	if leagueModel != nil {
 		return leagueModel.Teams, nil
@@ -66,7 +66,7 @@ func (p *UnderstatController) cacheLeague(league model.League, year model.Year) 
 	if error != nil {
 		return nil, error
 	}
-	p.repo.SetModel(lmodel, league, year)
+	p.Repo.SetModel(lmodel, league, year)
 	return lmodel, nil
 }
 
