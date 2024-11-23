@@ -1,10 +1,8 @@
-package page
+package model
 
 import (
 	"encoding/json"
 	"testing"
-
-	"github.com/gkonto/understat/model"
 )
 
 // Helper function to create a Page instance with mock content
@@ -51,7 +49,7 @@ func TestBuildPlayers(t *testing.T) {
 	"xGBuildup":"2.3"
 	}
 	]`
-	var expected model.Players
+	var expected Players
 	err := json.Unmarshal([]byte(contents), &expected)
 	if err != nil {
 		t.Fatalf("Invalid mock data: %v", err)
@@ -62,11 +60,11 @@ func TestBuildPlayers(t *testing.T) {
 		t.Fatalf("Unexpected error: %v", err)
 	}
 
-	if len(players) != len(expected) {
-		t.Errorf("Expected %d players but got %d", len(expected), len(players))
+	if len(*players) != len(expected) {
+		t.Errorf("Expected %d players but got %d", len(expected), len(*players))
 	}
-	if players[0].Name != expected[0].Name {
-		t.Errorf("Expected player name %q but got %q", expected[0].Name, players[0].Name)
+	if (*players)[0].Name != expected[0].Name {
+		t.Errorf("Expected player name %q but got %q", expected[0].Name, (*players)[0].Name)
 	}
 }
 
@@ -81,11 +79,11 @@ func TestGetPlayers(t *testing.T) {
 		t.Fatalf("Unexpected error: %v", err)
 	}
 
-	if len(players) != 1 {
-		t.Errorf("Expected 1 player but got %d", len(players))
+	if len(*players) != 1 {
+		t.Errorf("Expected 1 player but got %d", len(*players))
 	}
-	if players[0].Name != "Player 1" {
-		t.Errorf("Expected player name %q but got %q", "Player 1", players[0].Name)
+	if (*players)[0].Name != "Player 1" {
+		t.Errorf("Expected player name %q but got %q", "Player 1", (*players)[0].Name)
 	}
 }
 
@@ -117,8 +115,8 @@ func TestGetTeams(t *testing.T) {
 		t.Fatalf("Unexpected error: %v", err)
 	}
 
-	if len(teams) != 0 { // `buildTeams` is not fully implemented yet, adapt based on actual implementation
-		t.Errorf("Expected 0 teams but got %d", len(teams))
+	if len(*teams) != 0 { // `buildTeams` is not fully implemented yet, adapt based on actual implementation
+		t.Errorf("Expected 0 teams but got %d", len(*teams))
 	}
 }
 
@@ -133,10 +131,10 @@ func TestGetGames(t *testing.T) {
 		t.Fatalf("Unexpected error: %v", err)
 	}
 
-	if len(games) != 1 {
-		t.Errorf("Expected 1 game but got %d", len(games))
+	if len(*games) != 1 {
+		t.Errorf("Expected 1 game but got %d", len(*games))
 	}
-	if games[0].HasResult != true {
+	if (*games)[0].HasResult != true {
 		t.Errorf("Expected HasResult to be true but got false")
 	}
 }

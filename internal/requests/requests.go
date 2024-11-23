@@ -5,7 +5,6 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/gkonto/understat/internal/page"
 	"github.com/gkonto/understat/model"
 )
 
@@ -45,11 +44,11 @@ func (p *HTTPGetter) FormatURL(league model.League, year model.Year) string {
 	return fmt.Sprintf("%s/league/%s/%d", baseURL, league, year)
 }
 
-func (p *UnderstatPageGetter) Fetch(league model.League, year model.Year) (*page.Page, error) {
+func (p *UnderstatPageGetter) Fetch(league model.League, year model.Year) (*model.Page, error) {
 	url := p.htmlGetter.FormatURL(league, year)
 	contents, err := p.htmlGetter.Get(url)
 	if err != nil {
 		return nil, err
 	}
-	return page.New(url, contents), nil
+	return model.NewPage(url, contents), nil
 }

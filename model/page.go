@@ -1,4 +1,4 @@
-package page
+package model
 
 import (
 	"encoding/json"
@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/gkonto/understat/model"
 )
 
 type Page struct {
@@ -22,7 +21,7 @@ const (
 	GAMES   = "datesData"
 )
 
-func New(url string, contents []byte) *Page {
+func NewPage(url string, contents []byte) *Page {
 	return &Page{
 		Url:      url,
 		Contents: contents,
@@ -52,18 +51,18 @@ func decodeJSON(contents string) (string, error) {
 	return decoded, nil
 }
 
-func buildPlayers(contents string) (model.Players, error) {
-	var players model.Players
-	err := json.Unmarshal([]byte(contents), &players)
+func buildPlayers(contents string) (*Players, error) {
+	players := &Players{}
+	err := json.Unmarshal([]byte(contents), players)
 	if err != nil {
-		return model.Players{}, err
+		return &Players{}, err
 	}
 
 	return players, nil
 }
 
-func buildTeams(contents string) (model.Teams, error) {
-	var teams model.Teams
+func buildTeams(contents string) (*Teams, error) {
+	teams := &Teams{}
 	// err := json.Unmarshal([]byte(contents), &teams)
 	// if err != nil {
 	// 	return model.Teams{}, err
@@ -71,16 +70,16 @@ func buildTeams(contents string) (model.Teams, error) {
 	return teams, nil
 }
 
-func buildGames(contents string) (model.Games, error) {
-	var games model.Games
-	err := json.Unmarshal([]byte(contents), &games)
+func buildGames(contents string) (*Games, error) {
+	games := &Games{}
+	err := json.Unmarshal([]byte(contents), games)
 	if err != nil {
-		return model.Games{}, err
+		return nil, err
 	}
 	return games, nil
 }
 
-func (p *Page) GetPlayers() (model.Players, error) {
+func (p *Page) GetPlayers() (*Players, error) {
 	playerContents, err := p.extractData(PLAYERS)
 	if err != nil {
 		return nil, errors.New("Failed to get Players data")
@@ -92,7 +91,7 @@ func (p *Page) GetPlayers() (model.Players, error) {
 	return buildPlayers(jsonDecoded)
 }
 
-func (p *Page) GetTeams() (model.Teams, error) {
+func (p *Page) GetTeams() (*Teams, error) {
 	teamContents, err := p.extractData(TEAMS)
 	if err != nil {
 		return nil, errors.New("Failed to get Team data")
@@ -104,7 +103,7 @@ func (p *Page) GetTeams() (model.Teams, error) {
 	return buildTeams(jsonDecoded)
 }
 
-func (p *Page) GetGames() (model.Games, error) {
+func (p *Page) GetGames() (*Games, error) {
 	gamesContents, err := p.extractData(GAMES)
 	if err != nil {
 		return nil, errors.New("Failed to get Games data")

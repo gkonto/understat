@@ -10,85 +10,77 @@ type RequestHandler struct {
 }
 
 type UnderstatController struct {
-	Repo *cache.Repository
+	Cache *cache.Repository
 }
 
 func New() *UnderstatController {
 	return &UnderstatController{
-		Repo: cache.NewRepository(),
+		Cache: cache.NewRepository(),
 	}
 }
 
-func (p *UnderstatController) GetPlayers(league model.League, year model.Year) (model.Players, error) {
-	leagueModel := p.Repo.GetLeague(league, year)
-
-	if leagueModel != nil {
-		return leagueModel.Players, nil
+func (p *UnderstatController) GetPlayers(league model.League, year model.Year) (*model.Players, error) {
+	bundle := p.Cache.CacheBundle(league, year)
+	if bundle.Page == nil {
+		requestHandler := requests.New()
+		page, err := requestHandler.Fetch(league, year)
+		if err != nil {
+			return nil, err
+		}
+		bundle.Page = page
 	}
 
-	leagueModel, error := p.cacheLeague(league, year)
-	if error != nil {
-		return nil, error
+	if bundle.Model.Players == nil {
+		players, err := bundle.Page.GetPlayers()
+		if err != nil {
+			return nil, err
+		}
+		bundle.Model.Players = players
 	}
-	return leagueModel.Players, error
+
+	return bundle.Model.Players, nil
 }
 
-func (p *UnderstatController) GetGames(league model.League, year model.Year) (model.Games, error) {
-	leagueModel := p.Repo.GetLeague(league, year)
-
-	if leagueModel != nil {
-		return leagueModel.Games, nil
+func (p *UnderstatController) GetGames(league model.League, year model.Year) (*model.Games, error) {
+	bundle := p.Cache.CacheBundle(league, year)
+	if bundle.Page == nil {
+		requestHandler := requests.New()
+		page, err := requestHandler.Fetch(league, year)
+		if err != nil {
+			return nil, err
+		}
+		bundle.Page = page
 	}
 
-	leagueModel, error := p.cacheLeague(league, year)
-	if error != nil {
-		return nil, error
+	if bundle.Model.Games == nil {
+		games, err := bundle.Page.GetGames()
+		if err != nil {
+			return nil, err
+		}
+		bundle.Model.Games = games
 	}
-	return leagueModel.Games, error
+
+	return bundle.Model.Games, nil
 }
 
-func (p *UnderstatController) GetTeams(league model.League, year model.Year) (model.Teams, error) {
-	leagueModel := p.Repo.GetLeague(league, year)
-
-	if leagueModel != nil {
-		return leagueModel.Teams, nil
+func (p *UnderstatController) GetTeams(league model.League, year model.Year) (*model.Teams, error) {
+	bundle := p.Cache.CacheBundle(league, year)
+	if bundle.Page == nil {
+		requestHandler := requests.New()
+		page, err := requestHandler.Fetch(league, year)
+		if err != nil {
+			return nil, err
+		}
+		bundle.Page = page
 	}
 
-	leagueModel, error := p.cacheLeague(league, year)
-	if error != nil {
-		return nil, error
-	}
-	return leagueModel.Teams, error
-}
-
-func (p *UnderstatController) cacheLeague(league model.League, year model.Year) (*model.LeagueModel, error) {
-	lmodel, error := p.requestData(league, year)
-	if error != nil {
-		return nil, error
-	}
-	p.Repo.SetModel(lmodel, league, year)
-	return lmodel, nil
-}
-
-func (p *UnderstatController) requestData(league model.League, year model.Year) (*model.LeagueModel, error) {
-	requestHandler := requests.New()
-	page, err := requestHandler.Fetch(league, year)
-
-	if err != nil {
-		return nil, err
-	}
-	players, err := page.GetPlayers()
-	if err != nil {
-		return nil, err
-	}
-	teams, err := page.GetTeams()
-	if err != nil {
-		return nil, err
-	}
-	games, err := page.GetGames()
-	if err != nil {
-		return nil, err
+	if bundle.Model.Teams == nil {
+		teams, err := bundle.Page.GetTeams()
+		if err != nil {
+			return nil, err
+		}
+		bundle.Model.Teams = teams
 	}
 
-	return model.NewLeagueModel(players, teams, games), nil
+	return bundle.Model.Teams, nil
 }

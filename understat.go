@@ -20,8 +20,8 @@ func (p *UnderstatAPI) GetPlayers(league model.League, year model.Year) (model.P
 	if error != nil {
 		return nil, error
 	}
-	result := make(model.Players, len(orig))
-	copy(result, orig)
+	result := make(model.Players, len(*orig))
+	copy(result, *orig)
 	return result, error
 }
 
@@ -30,8 +30,8 @@ func (p *UnderstatAPI) GetGames(league model.League, year model.Year) (model.Gam
 	if error != nil {
 		return nil, error
 	}
-	result := make(model.Games, len(orig))
-	copy(result, orig)
+	result := make(model.Games, len(*orig))
+	copy(result, *orig)
 	return result, error
 }
 
@@ -40,7 +40,7 @@ func (p *UnderstatAPI) GetTeams(league model.League, year model.Year) (model.Tea
 	if error != nil {
 		return nil, error
 	}
-	result := make(model.Teams, len(orig))
-	copy(result, orig)
+	result := make(model.Teams, len(*orig))
+	copy(result, *orig)
 	return result, error
 }
