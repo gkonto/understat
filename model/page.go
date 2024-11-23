@@ -62,12 +62,26 @@ func buildPlayers(contents string) (*Players, error) {
 }
 
 func buildTeams(contents string) (*Teams, error) {
-	teams := &Teams{}
-	// err := json.Unmarshal([]byte(contents), &teams)
-	// if err != nil {
-	// 	return model.Teams{}, err
-	// }
-	return teams, nil
+	// Create a map to store teams by their ID
+	teamsMap := map[string]Team{}
+
+	// Unmarshal the JSON content into the map
+	err := json.Unmarshal([]byte(contents), &teamsMap)
+	if err != nil {
+		return nil, err
+	}
+
+	// Extract the Teams from the map into a slice (array) of Team
+	var teamsArray []Team
+	for _, team := range teamsMap {
+		teamsArray = append(teamsArray, team)
+	}
+
+	// Create a Teams object, which is a slice of Team
+	teams := Teams(teamsArray)
+
+	// Return the teams slice
+	return &teams, nil
 }
 
 func buildGames(contents string) (*Games, error) {
@@ -82,7 +96,7 @@ func buildGames(contents string) (*Games, error) {
 func (p *Page) GetPlayers() (*Players, error) {
 	playerContents, err := p.extractData(PLAYERS)
 	if err != nil {
-		return nil, errors.New("Failed to get Players data")
+		return nil, errors.New("failed to get players data")
 	}
 	jsonDecoded, err := decodeJSON(playerContents)
 	if err != nil {
@@ -94,7 +108,7 @@ func (p *Page) GetPlayers() (*Players, error) {
 func (p *Page) GetTeams() (*Teams, error) {
 	teamContents, err := p.extractData(TEAMS)
 	if err != nil {
-		return nil, errors.New("Failed to get Team data")
+		return nil, errors.New("failed to get team data")
 	}
 	jsonDecoded, err := decodeJSON(teamContents)
 	if err != nil {
@@ -106,7 +120,7 @@ func (p *Page) GetTeams() (*Teams, error) {
 func (p *Page) GetGames() (*Games, error) {
 	gamesContents, err := p.extractData(GAMES)
 	if err != nil {
-		return nil, errors.New("Failed to get Games data")
+		return nil, errors.New("failed to get games data")
 	}
 	jsonDecoded, err := decodeJSON(gamesContents)
 	if err != nil {
@@ -138,7 +152,7 @@ func (p *Page) extractData(tag string) (string, error) {
 	})
 
 	if jsonData == "" {
-		return "", fmt.Errorf("Could not parse html file contents for tag: %s", tag)
+		return "", fmt.Errorf("could not parse html file contents for tag: %s", tag)
 	}
 	return jsonData, nil
 }
@@ -163,8 +177,4 @@ func (p *Page) getEndIndex(contents string) int {
 		end_index = match_end[0]
 	}
 	return end_index
-}
-
-func (p *Page) hasContents() bool {
-	return len(p.Contents) > 0
 }
