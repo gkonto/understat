@@ -106,7 +106,38 @@ func TestExtractData(t *testing.T) {
 
 func TestGetTeams(t *testing.T) {
 	mockContent := `
-		<script>var teamsData = JSON.parse("[{\"id\":\"1\",\"title\":\"Team A\",\"short_title\":\"TA\"}]");</script>
+		<script>var teamsData = JSON.parse("
+		{
+			"71" : 
+			{
+				"id": "71",
+				"title": "Aston Villa",
+				"history": 
+				[
+					{
+						"h_a": "a",
+						"xG": 1.1371800000000000796518406787072308361530303955078125,
+						"xGA": 1.3503600000000000047606363295926712453365325927734375,
+						"npxG": 0.37601099999999998413358071047696284949779510498046875,
+						"npxGA": 1.3503600000000000047606363295926712453365325927734375,
+						"ppda": { "att": 182, "def": 28 },
+						"ppda_allowed": { "att": 303, "def": 21 },
+						"deep": 6,
+						"deep_allowed": 4,
+						"scored": 2,
+						"missed": 3,
+						"xpts": 1.1958999999999999630517777404747903347015380859375,
+						"result": "l",
+						"date": "2021-08-14 14:00:00",
+						"wins": 0,
+						"draws": 0,
+						"loses": 1,
+						"pts": 0,
+						"npxGD": -0.97434900000000002062705561911570839583873748779296875
+					}
+				]
+			}
+		}");</script>
 	`
 	page := newTestPage(mockContent)
 
@@ -115,7 +146,7 @@ func TestGetTeams(t *testing.T) {
 		t.Fatalf("Unexpected error: %v", err)
 	}
 
-	if len(*teams) != 0 { // `buildTeams` is not fully implemented yet, adapt based on actual implementation
+	if len(*teams) != 1 {
 		t.Errorf("Expected 0 teams but got %d", len(*teams))
 	}
 }
