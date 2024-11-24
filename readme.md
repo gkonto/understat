@@ -1,6 +1,6 @@
 # Understat Statistics Module
 
-The Understat Statistics Module is a Go library designed to fetch and process football data from the [Understat](https://understat.com) website. It provides convenient APIs to retrieve player, game, and team statistics for specific leagues and years. This module is perfect for developers and analysts looking to integrate Understat data into their projects.
+The Understat Statistics Module is a Go library designed to fetch and process football data from the [Understat](https://understat.com) website. It provides convenient APIs to retrieve player, game, and team statistics for specific leagues and years. This module provides an easy way to access and work with Understat data, making it suitable for developers, analysts, or anyone interested in football statistics.
 
 ---
 
