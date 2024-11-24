@@ -18,19 +18,15 @@ The Understat Statistics Module is a Go library designed to fetch and process fo
 
 Ensure you have the following installed before using this module:
 
-- [Go](https://golang.org/dl/) (version 1.18 or later)
+- [Go](https://golang.org/dl/) (version 1.23 or later)
 
 ---
 
-## Installation
+1. To install the Understat module, use the following `go get` command:
 
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/gkonto/understat.git
-   cd understat
-
-   ```
+```bash
+go get github.com/gkonto/understat
+```
 
 2. Download and resolve dependencies
 
@@ -94,6 +90,20 @@ if err != nil {
 }
 fmt.Println("Teams:", teams)
 ```
+
+---
+
+## Caching mechanism
+
+The UnderstatAPI uses a built-in caching mechanism to store data for each API call. Subsequent requests for the same data (e.g., the same league and year) will be retrieved much faster from the cache.
+
+To clear the cache: Currently, the only way to clear the cache is to create a new UnderstatAPI instance:
+
+```bash
+api = understat.NewUnderstatAPI() // This resets the cache
+```
+
+This feature helps improve performance, especially when dealing with repeated queries.
 
 ---
 
