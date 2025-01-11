@@ -29,12 +29,17 @@ func NewPage(url string, contents []byte) *Page {
 }
 
 func decodeJSON(contents string) (string, error) {
+	start := 0
+	end := len(contents)
 	if strings.HasPrefix(contents, `"`) && strings.HasSuffix(contents, `"`) {
-		contents = contents[1 : len(contents)-1]
+		start = 1
+		end -= 1
 	}
-	decoded := ""
-	for i := 0; i < len(contents); i++ {
-		if i+3 < len(contents) && contents[i] == '\\' && contents[i+1] == 'x' {
+
+	buffer := make([]byte, 0, len(contents))
+
+	for i := start; i < end; i++ {
+		if i+3 < end && contents[i] == '\\' && contents[i+1] == 'x' {
 			// Convert \xHH to the corresponding character
 			hexValue := contents[i+2 : i+4]
 			var char byte
@@ -42,13 +47,13 @@ func decodeJSON(contents string) (string, error) {
 			if err != nil {
 				return "", fmt.Errorf("failed to decode hex escape: %w", err)
 			}
-			decoded += string(char)
+			buffer = append(buffer, char)
 			i += 3 // Skip over the escape sequence
 		} else {
-			decoded += string(contents[i])
+			buffer = append(buffer, contents[i])
 		}
 	}
-	return decoded, nil
+	return string(buffer), nil
 }
 
 func buildPlayers(contents string) (*Players, error) {
